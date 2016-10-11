@@ -3,14 +3,32 @@ db = pg.DB(dbname='phonebook_db')
 
 
 def lookup_entry():
+    keep_running = True
+    while keep_running == True:
+        name = raw_input("Name? ").capitalize()
+        for i in range(len(result_list)):
+            if result_list[i].name == name:
+                print "\n%s:\n\nPhone: %s\nEmail: %s\n" % (result_list[i].name, result_list[i].phone_number, result_list[i].email)
+                raw_input()
+                again = raw_input("Lookup another entry? (Y or N)\n").lower()
+                if again == "y" or again == "yes" or again == "":
+                    pass
+                else:
+                    keep_running = False
+            else:
+                print "\nEntry not found."
+                raw_input()
+                again = raw_input("Lookup another entry? (Y or N)\n").lower()
+                if again == "y" or again == "yes" or again == "":
+                    pass
+                else:
+                    keep_running = False
+
+
+def add_entry():
     name = raw_input("Name? ").capitalize()
-    for i in range(len(result_list)):
-        if result_list[i].name == name:
-            print "\n%s:\n\nPhone: %s\nEmail: %s\n" % (result_list[i].name, result_list[i].phone_number, result_list[i].email)
-            raw_input()
-            found = True
-        else:
-            print "Entry not found."
+    phone = raw_input("Phonenumber? ")
+    email = raw_input("Email? ").lower()
 
 
 while True:
