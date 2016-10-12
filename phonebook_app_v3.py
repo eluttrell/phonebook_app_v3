@@ -70,7 +70,7 @@ def add_entry():
             db.insert('phonebook', name=name, phone_number=phone, email=email)
             new_list = db.query(
                 "select * from phonebook where name = '%s'" % name).namedresult()
-            raw_input("New Entry:\nName: %s\nPhone: %s\nEmail: %s" % (
+            raw_input("\n\tNew Entry:\n\nName: %s\nPhone: %s\nEmail: %s" % (
                 new_list[0].name, new_list[0].phone_number, new_list[0].email))
             break
         else:
@@ -97,6 +97,16 @@ def delete_entry():
             break
 
 
+def list_entries():
+    keep_running = True
+    while keep_running == True:
+        id_list = db.query("select id from phonebook").namedresult()
+        result_list = db.query("select * from phonebook").namedresult()
+        for i in range(len(id_list)):
+            print "\nName: %s\nPhone: %s\nEmail: %s\n" % (result_list[i].name, result_list[i].phone_number, result_list[i].email)
+        raw_input()
+        break
+
 while True:
     print "======================="
     print "|Electronic Phone Book|"
@@ -118,10 +128,14 @@ while True:
     elif response == "2":
         add_entry()
 
-    # if response == "3":
-    #
+    if response == "3":
+        update_entry()
+
     if response == "4":
         delete_entry()
+
+    if response == "5":
+        list_entries()
 
     elif response == "6":
         break
