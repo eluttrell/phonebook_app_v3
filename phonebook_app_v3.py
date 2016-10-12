@@ -17,13 +17,38 @@ def lookup_entry():
             else:
                 keep_running = False
         else:
-            print "\nEntry not found."
-            raw_input()
+            add = raw_input(
+                "\nEntry not found. Would you like to add it? (Y or N)\n").lower()
+            if add == "yes" or add == "y" or add == "":
+                add_from_lookup(name)
+            else:
+                pass
             again = raw_input("Lookup another entry? (Y or N)\n").lower()
             if again == "y" or again == "yes" or again == "":
                 pass
             else:
                 keep_running = False
+
+
+def add_from_lookup(name):
+    keep_running = True
+    while keep_running == True:
+        result_list = db.query(
+            "select * from phonebook where name = '%s'" % name).namedresult()
+        phone = raw_input("Phonenumber? ")
+        email = raw_input("Email? ").lower()
+        confirm = raw_input("\nName: %s\nPhone: %s\nEmail: %s\nIs this information correct? (Y or N)" % (
+            name, phone, email)).lower()
+        if confirm == "y" or confirm == "yes":
+            db.insert('phonebook', name=name, phone_number=phone, email=email)
+            new_list = db.query(
+                "select * from phonebook where name = '%s'" % name).namedresult()
+            raw_input("New Entry:\nName: %s\nPhone: %s\nEmail: %s" % (
+                new_list[0].name, new_list[0].phone_number, new_list[0].email))
+            break
+        else:
+            raw_input("New entry cancelled.")
+            break
 
 
 def add_entry():
@@ -64,10 +89,12 @@ def delete_entry():
             break
         else:
             pass
-        confirm = raw_input("Is this the entry you want to delete? (Y or N)\nName: %s\nPhone: %s\nEmail: %s" % (
+        confirm = raw_input("\nName: %s\nPhone: %s\nEmail: %s\nIs this the entry you want to delete? (Y or N)" % (
             result_list[0].name, result_list[0].phone_number, result_list[0].email)).lower()
         if confirm == "y" or confirm == "yes":
-            db.delete('phonebook', {'id': % s}) % result_list.id
+            db.delete('phonebook', {'id': '%d' % result_list[0].id})
+            raw_input("Entry deleted.")
+            break
 
 
 while True:
